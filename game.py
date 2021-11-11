@@ -1,4 +1,3 @@
-import discord
 import random
 
 
@@ -26,9 +25,9 @@ class Game():
         2: [2, 4, '|'],
         3: [3, 4, '|'],
         4: [2, 3, '/'],
-        5: [2, 5, r'\'],
+        5: [2, 5, '\\'],
         6: [4, 3, '/'],
-        7: [4, 4, r'\']
+        7: [4, 4, '\\']
     }
 
 
@@ -42,7 +41,7 @@ class Game():
         self.word = random.choice(Game.WORDS_LIST)
         self.display_word = ["_" for x in range(len(self.word))]
         self.wrong_guesses = 0
-        self.board = STARTER_BOARD[:]
+        self.board = Game.STARTER_BOARD[:]
 
 
     def guess(self, letter):
@@ -67,7 +66,7 @@ class Game():
             return (-1, "Wrong guess!")
 
     def update_board(self):
-        row, column, string = HANGMAN_PARTS[self.wrong_guesses]
+        row, column, string = Game.HANGMAN_PARTS[self.wrong_guesses]
         self.board[row] = self.board[row[0:column]] + string + self.board[row[0:column + 1]]
 
     def display_board(self):
