@@ -12,12 +12,12 @@ class Game():
     ]
 
     STARTER_BOARD = [
-        '┍━━┑   ',
+        '┌──┐   ',
         '│      ',
         '│      ',
         '│      ',
         '│      ',
-        '┶━━━━━━']
+        '┴───── ']
 
     HANGMAN_PARTS = {
         # wrong_guesses : [row, column, new_value]
@@ -71,4 +71,4 @@ class Game():
 
     def display_board(self):
         word_so_far = "`" + " ".join(self.display_word).center(19, " ") + "`"
-        return ("`" + "\n".join(self.board) + "`" + "\n" + word_so_far)
+        return ("```" + "\n".join(self.board) + "```" + "\n" + word_so_far)
