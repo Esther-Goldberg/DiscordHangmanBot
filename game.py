@@ -4,13 +4,33 @@ import random
 
 class Game():
 
-    words_list = [
+    WORdS_LIST = [
         "yesterday",
         "minecraft",
         "discord",
         "computer",
         "telephone"
     ]
+
+    STARTER_BOARD = [
+        '┍━━┑   ',
+        '│      ',
+        '│      ',
+        '│      ',
+        '│      ',
+        '┶━━━━━━']
+
+    HANGMAN_PARTS = {
+        # wrong_guesses : [row, column, new_value]
+        1: [1, 4, '0'],
+        2: [2, 4, '|'],
+        3: [3, 4, '|'],
+        4: [2, 3, '/'],
+        5: [2, 5, r'\'],
+        6: [4, 3, '/'],
+        7: [4, 4, r'\']
+    }
+
 
     def __init__(self, guild, author, channel, time):
         self.guild = guild
@@ -19,9 +39,11 @@ class Game():
         self.created_time = time
 
         self.letters_guessed = []
-        self.word = random.choice(Game.words_list)
+        self.word = random.choice(Game.WORDS_LIST)
         self.display_word = ["_" for x in range(len(self.word))]
-        self.guesses_remaining = 7
+        self.wrong_guesses = 0
+        self.board = STARTER_BOARD[:]
+
 
     def guess(self, letter):
         letter = letter.lower()
@@ -38,49 +60,16 @@ class Game():
             return (0, "Correct guess!")
         else:
             self.letters_guessed.append(letter)
-            self.guesses_remaining -= 1
-            if self.guesses_remaining == 0:
+            self.wrong_guesses += 1
+            self.update_board()
+            if self.wrong_guesses == 7:
                 return (-2, "Sorry, you lose!")
             return (-1, "Wrong guess!")
 
+    def update_board(self):
+        row, column, string = HANGMAN_PARTS[self.wrong_guesses]
+        self.board[row] = self.board[row[0:column]] + string + self.board[row[0:column + 1]]
+
     def display_board(self):
-        board = []
-
-        if self.guesses_remaining <= 6:
-            board.append("`         0         `")
-            if self.guesses_remaining == 5:
-                board.append("`         |         `")
-                board.append("`                   `")
-                board.append("`                   `")
-            elif self.guesses_remaining == 4:
-                board.append("`         |         `")
-                board.append("`         |         `")
-                board.append("`                   `")
-            elif self.guesses_remaining == 3:
-                board.append("`        /|         `")
-                board.append("`         |         `")
-                board.append("`                   `")
-            elif self.guesses_remaining == 2:
-                board.append("`        /|\\        `")
-                board.append("`         |         `")
-                board.append("`                   `")
-            elif self.guesses_remaining == 1:
-                board.append("`        /|\\        `")
-                board.append("`         |         `")
-                board.append("`        /          `")
-            elif self.guesses_remaining == 0:
-                board.append("`        /|\\        `")
-                board.append("`         |         `")
-                board.append("`        / \\        `")
-            else:
-                board.append("`                   `")
-                board.append("`                   `")
-                board.append("`                   `")
-
-            board.append("")
-
         word_so_far = "`" + " ".join(self.display_word).center(19, " ") + "`"
-
-        board.append(word_so_far)
-
-        return "\n".join(board)
+        return ("\n".join(self.board) + "\n" + word_so_far)
