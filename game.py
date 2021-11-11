@@ -12,12 +12,12 @@ class Game():
     ]
 
     STARTER_BOARD = [
-        '┌──┐   ',
+        '┌───┐   ',
         '│      ',
         '│      ',
         '│      ',
         '│      ',
-        '┴───── ']
+        '┴────── ']
 
     HANGMAN_PARTS = {
         # wrong_guesses : [row, column, new_value]
@@ -46,6 +46,7 @@ class Game():
 
     def guess(self, letter):
         letter = letter.lower()
+        self.letters_guessed.append(letter)
         if letter in self.letters_guessed:
             return (1, "Already guessed this letter, try again!")
         elif letter in self.word:
@@ -58,7 +59,6 @@ class Game():
 
             return (0, "Correct guess!")
         else:
-            self.letters_guessed.append(letter)
             self.wrong_guesses += 1
             self.update_board()
             if self.wrong_guesses == 7:
@@ -71,4 +71,4 @@ class Game():
 
     def display_board(self):
         word_so_far = "`" + " ".join(self.display_word).center(19, " ") + "`"
-        return ("```\n" + "\n".join(self.board) + "\n```\n" + word_so_far)
+        return ("```\n" + "\n".join(self.board) + "\n" + word_so_far + "\n```")
