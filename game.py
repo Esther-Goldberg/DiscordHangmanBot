@@ -67,7 +67,7 @@ class Game():
 
     def update_board(self):
         row, column, string = Game.HANGMAN_PARTS[self.wrong_guesses]
-        self.board[row] = self.board[row[0:column]] + string + self.board[row[0:column + 1]]
+        self.board[row] = self.board[row][0:column] + string + self.board[row][0:column + 1]
 
     def display_board(self):
         word_so_far = "`" + " ".join(self.display_word).center(19, " ") + "`"
