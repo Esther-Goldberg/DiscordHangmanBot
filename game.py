@@ -3,7 +3,7 @@ import random
 
 class Game():
 
-    WORdS_LIST = [
+    WORDS_LIST = [
         "yesterday",
         "minecraft",
         "discord",
