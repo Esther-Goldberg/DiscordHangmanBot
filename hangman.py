@@ -20,7 +20,7 @@ class Hangman(commands.Cog):
     async def hangman(self, ctx):
         if ctx.guild in self.games:
             time = self.games[ctx.guild].created_time
-            if (now - time).total_seconds() > 5*60:
+            if (datetime.now() - time).total_seconds() > 5*60:
                 self.games[ctx.guild] = game.Game(ctx.guild, ctx.author, ctx.channel, datetime.now())
                 await ctx.send(f'Game started\nUse `!guess <letter>` to guess!\nYour word is\n{self.games[ctx.guild].display_board()}')
             else:
